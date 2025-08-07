@@ -7,6 +7,8 @@ import com.dev.converter.enums.Unit;
 import com.dev.converter.exception.InvalidUnitException;
 import com.dev.converter.exception.UnsupportedCategoryException;
 import com.dev.converter.service.ConversionService;
+import com.dev.converter.service.InfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +19,12 @@ import java.util.Map;
 @RequestMapping("/api")
 public class ConversionController {
     private final ConversionService conversionService;
+    private final InfoService infoService;
 
-    public ConversionController(ConversionService conversionService) {
+    @Autowired
+    public ConversionController(ConversionService conversionService, InfoService infoService) {
         this.conversionService = conversionService;
+        this.infoService = infoService;
     }
 
     /* Converts a value from one measurement unit to another based on the category */
@@ -38,7 +43,7 @@ public class ConversionController {
     /* Returns a list of supported measurement categories */
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getSupportedCategories() {
-        List<Category> categories = conversionService.getCategories();
+        List<Category> categories = infoService.getCategories();
         return ResponseEntity.status(200).body(categories);
     }
 
@@ -46,7 +51,7 @@ public class ConversionController {
     @GetMapping("/units")
     public ResponseEntity<?> getSupportedUnits(@RequestParam String category) {
         try {
-            List<Unit> units = conversionService.getUnits(category);
+            List<Unit> units = infoService.getUnits(category);
             return ResponseEntity.status(200).body(units);
         }
         catch (UnsupportedCategoryException e) {

@@ -33,22 +33,4 @@ public class ConversionService {
             throw new UnsupportedCategoryException("Unsupported category: " + request.getCategory());
         }
     }
-
-    public List<Category> getCategories() {
-        return new ArrayList<>(List.of(Category.values()));
-    }
-
-    public List<Unit> getUnits(String cat) {
-        try {
-            Category category = Category.valueOf(cat.toUpperCase());
-            return switch(category) {
-                case TEMPERATURE -> List.of(TemperatureUnit.values());
-                case LENGTH -> List.of(LengthUnit.values());
-                case WEIGHT -> List.of(WeightUnit.values());
-                case TIME -> List.of(TimeUnit.values());
-            };
-        } catch (IllegalArgumentException e) {
-            throw new UnsupportedCategoryException("Unsupported category: " + cat);
-        }
-    }
 }
