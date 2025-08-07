@@ -1,8 +1,11 @@
 package com.dev.converter.controller;
 
 import com.dev.converter.dto.ConversionRequest;
+import com.dev.converter.dto.ConversionResponse;
 import com.dev.converter.enums.Category;
 import com.dev.converter.enums.Unit;
+import com.dev.converter.exception.InvalidUnitException;
+import com.dev.converter.exception.UnsupportedCategoryException;
 import com.dev.converter.service.ConversionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +24,14 @@ public class ConversionController {
 
     /* Converts a value from one measurement unit to another based on the category */
     @PostMapping("/convert")
-    public void convert(@RequestBody ConversionRequest request) {
+    public ResponseEntity<?> convert(@RequestBody ConversionRequest request) {
+        try {
+            ConversionResponse response = conversionService.convertUnits(request);
+            return ResponseEntity.status(200).body(response);
+        }
+        catch (UnsupportedCategoryException | InvalidUnitException e) {
+            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+        }
 
     }
 
@@ -39,7 +49,7 @@ public class ConversionController {
             List<Unit> units = conversionService.getUnits(category);
             return ResponseEntity.status(200).body(units);
         }
-        catch (IllegalArgumentException e) {
+        catch (UnsupportedCategoryException e) {
             return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
         }
     }

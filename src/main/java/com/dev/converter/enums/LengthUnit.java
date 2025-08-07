@@ -1,9 +1,9 @@
 package com.dev.converter.enums;
 
 public enum LengthUnit implements Unit {
-    KILOMETER,
     METER,
+    KILOMETER,
     MILE,
-    FOOT,
-    INCH
+    INCH,
+    FOOT
 }

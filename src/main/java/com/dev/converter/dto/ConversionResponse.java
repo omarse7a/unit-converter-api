@@ -8,9 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ConversionRequest {
-    private String category;
-    private String fromUnit;
-    private String toUnit;
-    private double value;
+@AllArgsConstructor
+public class ConversionResponse {
+    private double result;
+    private String status;
 }
