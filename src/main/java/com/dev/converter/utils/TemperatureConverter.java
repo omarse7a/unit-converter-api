@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TemperatureConverter implements UnitConverter {
+
     @Override
     public Unit validateUnit(String unit) {
         try {
@@ -18,17 +19,16 @@ public class TemperatureConverter implements UnitConverter {
         }
     }
 
-    /* convert the fromUnit to Celsius, then convert the Celsius value to the toUnit */
     @Override
     public ConversionResponse convert(ConversionRequest request) {
         TemperatureUnit from = (TemperatureUnit) validateUnit(request.getFromUnit());
         TemperatureUnit to = (TemperatureUnit) validateUnit(request.getToUnit());
-        double value = request.getValue();
+        double val = request.getValue();
 
         double celsius = switch(from) {
-            case CELSIUS -> value;
-            case FAHRENHEIT -> (value - 32) * 5 / 9;
-            case KELVIN -> value - 273.15;
+            case CELSIUS -> val;
+            case FAHRENHEIT -> (val - 32) * 5 / 9;
+            case KELVIN -> val - 273.15;
         };
 
         double result = switch(to) {
