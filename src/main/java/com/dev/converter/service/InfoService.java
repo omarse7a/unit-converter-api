@@ -1,5 +1,6 @@
 package com.dev.converter.service;
 
+import com.dev.converter.dto.ConversionRequest;
 import com.dev.converter.enums.*;
 import com.dev.converter.exception.UnsupportedCategoryException;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,13 @@ public class InfoService {
         } catch (IllegalArgumentException e) {
             throw new UnsupportedCategoryException("Unsupported category: " + cat);
         }
+    }
+
+    public ConversionRequest getSamplePayload() {
+        return new ConversionRequest("time", "days", "seconds", 3);
+    }
+
+    public String getHealth() {
+        return "Unit Converter API is up and running";
     }
 }

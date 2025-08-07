@@ -58,4 +58,16 @@ public class ConversionController {
             return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
         }
     }
+
+    @GetMapping("/sample-payload")
+    public ResponseEntity<ConversionRequest> getSamplePayload() {
+        ConversionRequest sample = infoService.getSamplePayload();
+        return ResponseEntity.status(200).body(sample);
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity<?> getHealth() {
+        String status = infoService.getHealth();
+        return ResponseEntity.status(200).body(Map.of("status", status));
+    }
 }
