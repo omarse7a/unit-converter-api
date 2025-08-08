@@ -8,6 +8,8 @@ import com.dev.converter.exception.InvalidUnitException;
 import com.dev.converter.exception.UnsupportedCategoryException;
 import com.dev.converter.service.ConversionService;
 import com.dev.converter.service.InfoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@Tag(name = "Unit Converter", description = "Unit conversion API, supporting temperature, length, weight and time unit conversions")
 @RestController
 @RequestMapping("/api")
 public class ConversionController {
@@ -27,7 +30,10 @@ public class ConversionController {
         this.infoService = infoService;
     }
 
-    /* Converts a value from one measurement unit to another based on the category */
+    @Operation(
+            summary = "Convert Units",
+            description = "Convert a value from one measurement unit to another based on the category"
+    )
     @PostMapping("/convert")
     public ResponseEntity<?> convert(@RequestBody ConversionRequest request) {
         try {
@@ -40,14 +46,20 @@ public class ConversionController {
 
     }
 
-    /* Returns a list of supported measurement categories */
+    @Operation(
+            summary = "Fetch Supported Categories",
+            description = "Returns a list of supported measurement categories"
+    )
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getSupportedCategories() {
         List<Category> categories = infoService.getCategories();
         return ResponseEntity.status(200).body(categories);
     }
 
-    /* Returns a list of supported measurement units for a category */
+    @Operation(
+            summary = "Fetch Supported Units",
+            description = "Returns a list of supported measurement units for a category"
+    )
     @GetMapping("/units")
     public ResponseEntity<?> getSupportedUnits(@RequestParam String category) {
         try {
@@ -59,12 +71,20 @@ public class ConversionController {
         }
     }
 
+    @Operation(
+            summary = "Sample Payload",
+            description = "Returns a sample for /convert payload"
+    )
     @GetMapping("/sample-payload")
     public ResponseEntity<ConversionRequest> getSamplePayload() {
         ConversionRequest sample = infoService.getSamplePayload();
         return ResponseEntity.status(200).body(sample);
     }
 
+    @Operation(
+            summary = "Health",
+            description = "Returns system status"
+    )
     @GetMapping("/health")
     public ResponseEntity<?> getHealth() {
         String status = infoService.getHealth();
